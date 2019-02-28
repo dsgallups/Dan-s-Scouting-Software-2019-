@@ -1,0 +1,25 @@
+{
+  "name": "frc1747-scouting",
+  "version": "1.0.0",
+  "description": "Repository for all software for FRC team #1747",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsgallups/Dan-s-Scouting-Software-2019-.git"
+  },
+  "author": "Daniel Gallups",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dsgallups/Dan-s-Scouting-Software-2019-/issues"
+  },
+  "homepage": "https://github.com/dsgallups/Dan-s-Scouting-Software-2019-#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "joi": "^14.3.1",
+    "mongoose": "^5.4.16"
+  }
+}

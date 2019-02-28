@@ -81,16 +81,16 @@ const rSchema = new mongoose.Schema({
     sandstorm: {
         autonomous: Boolean,
         hit_1747: Boolean,
-        points: [Schema.Types.Mixed],
+        points: [Schema.Types.Mixed]
     },
     teleop: {
         points: [Schema.Types.Mixed]
     },
     endgame: {
         climb_level: Number,
-        buddy_climb: [Schema.Types.Mixed]
+        buddy_climb: [Schema.Types.Mixed],
         win: Boolean
-    }
+    },
     notes: String
 });
 
@@ -117,7 +117,7 @@ app.post('/frc', (req, res) => {
             climb_level: Joi.number().min(0).max(3),
             buddy_climb: Joi.array(),
             win: Joi.boolean()
-        }
+        },
         notes: Joi.string()
     }
 
