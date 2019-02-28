@@ -76,19 +76,19 @@ const rSchema = new mongoose.Schema({
         team_id: Number,
         pos: [String],
         gamepiece: String,
-        preloaded: [Schema.Types.Mixed]
+        preloaded: []
     },
     sandstorm: {
         autonomous: Boolean,
         hit_1747: Boolean,
-        points: [Schema.Types.Mixed]
+        points: []
     },
     teleop: {
-        points: [Schema.Types.Mixed]
+        points: []
     },
     endgame: {
         climb_level: Number,
-        buddy_climb: [Schema.Types.Mixed],
+        buddy_climb: [],
         win: Boolean
     },
     notes: String
