@@ -36,11 +36,12 @@ mongoose.connect('mongodb://128.211.235.107/frc')
  *          ]
  *      },
  *      sandstorm: {
- *          autonomous: "<T/F>",
- *          hit_1747: "<T/F>",
+ *          autonomous: <true/false>,
+ *          hit_1747: <true/false>,
  *          points: [
  *                  {
  *                      cargo_type: "<hatch/cargo>",
+ * 						vehicle: "<rocket/ship>",
  *                      col: <no>,
  *                      row: <no>
  *                  },
@@ -53,6 +54,7 @@ mongoose.connect('mongodb://128.211.235.107/frc')
  *          points: [
  *              {
  *                  cargo_type: "<hatch/cargo>",
+ *					vehicle: "<rocket/ship>",
  *                  col: <no>,
  *                  row: <no>
  *              },
@@ -64,7 +66,7 @@ mongoose.connect('mongodb://128.211.235.107/frc')
  *      endgame: {
  *          climb_level: <0-3>,
  *          buddy_climb: [<no of bots bot lifted>, "<did it lift itself? T/F>"]
- *          win: "<T/F>"
+ *          win: <true/false>
  *      },
  *      notes: "<string>"
  *  }
@@ -98,7 +100,9 @@ const TeamMatch = mongoose.model('TeamMatch', rSchema);
 
 //Now we need to handle POSTs:
 app.post('/frc', (req, res) => {
-    const schema = {
+	//This is super annoying. We have to declare schemas for children objects. smh.
+	/*
+    const mainSchema = {
         initals: {
             team_id: Joi.number().integer(),
             pos: Joi.array().items(Joi.string()),
@@ -119,10 +123,38 @@ app.post('/frc', (req, res) => {
             win: Joi.boolean()
         },
         notes: Joi.string()
-    }
-
+    };
+	*/
+	const iSchema = Joi.object({
+            team_id: Joi.number().integer(),
+            pos: Joi.array().items(Joi.string()),
+            gamepiece: Joi.string().valid('hatch','cargo'),
+            preloaded: Joi.array()
+	});
+	const sSchema = Joi.object({
+	        autonomous: Joi.boolean(),
+            hit_1747: Joi.boolean(),
+            points: Joi.array()
+	});
+	const tSchema = Joi.object({
+			points: Joi.array()
+	});
+	const eSchema = Joi.object({
+            climb_level: Joi.number().min(0).max(3),
+            buddy_climb: Joi.array(),
+            win: Joi.boolean()
+	});
+	const nSchema = Joi.string();
+	
+    const mainSchema = {
+        initals: iSchema,
+        sandstorm: sSchema,
+        teleop: tSchema,
+        endgame: eSchema,
+        notes: nSchema
+    };
     //Based on the schema above, we'll compare whatever JSON was posted to us with that and store the returned JSON in val
-    const result = Joi.validate(req.body, schema);
+    const result = Joi.validate(req.body, mainSchema);
 
     //If there's an error, result.error will exist. We'll return the entire result object with HTTP code 400.
     if (result.error) {
