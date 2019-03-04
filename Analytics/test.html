@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>test</title>
+</head>
+<body>
+<div class="container">
+	<div class="body">
+	<div class="team-header">Team #"+teamID+":</div>
+		<div class='matches'>Matches recorded =  + noOfMatches +</div>
+		<div class='running-total'>Running total (all points)  + (+runningTotalCargo + +runningTotalTeleop) + </div>
+		<div class='subheader'>The following values are CUMULATIVE:</div>
+		<div class='avg-points'>avg points per match =  + Math.floor(((runningTotalCargo + runningTotalTeleop)/noOfMatches)*100)/100+</div>
+		<div class='avg-cargo'>avg cargo per match =  + Math.floor((runningTotalCargo/noOfMatches)*100)/100+</div>
+		<div class='avg-hatch'>avg hatch panels per match =  + Math.floor((runningTotalHatch/noOfMatches)*100)/100 + </div>
+		<div class='avg-sandstorm'>avg sandstorm period points =  + Math.floor((runningTotalCargo/noOfMatches)*100)/100+</div>
+		<div class='avg-teleop'>avg teleop period points =  + Math.floor((runningTotalTeleop/noOfMatches)*100)/100+</div>
+		
+		<div class='subheader'>The following values are per the last three matches:</div>
+		<div class='avg-points-3'>avg points per match =  + Math.floor(((runningTotalCargo3 + runningTotalCargo3)/noOfMatches3)*100)/100+ </div>
+		<div class='avg-cargo-3'>avg cargo per match =  + Math.floor((runningTotalCargo3/noOfMatches3)*100)/100 + </div>
+		<div class='avg-hatch-3'>avg hatch panels per match =  + Math.floor((runningTotalHatch3/noOfMatches3)*100)/100 + </div>
+		<div class='avg-sandstorm-3'>avg sandstorm period points = + Math.floor((runningTotalCargo3/noOfMatches3)*100)/100 + </div>
+		<div class='avg-teleop-3'>avg teleop period points = + Math.floor((runningTotalTeleop3/noOfMatches3)*100)/100 + </div>
+	</div>
+</div>
+</body>
+</html>

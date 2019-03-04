@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Scout v1.0</title>
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<script src="src/jquery.js"></script>
+	<script src="src/script.js"></script>
+	<meta charset="UTF-8">
+	<style>
+	body {
+		font-family: 'Ubuntu', sans-serif;
+	}
+	.show {
+		display: show;
+	}
+	.hide {
+		display: none;
+	}
+	.button {
+		display: inline;
+		border-radius: 5px;
+		border: 1px solid black;
+		display: inline;
+		padding-top: 2px;
+		margin-top: 6px;
+		padding-bottom: 2px;
+		justify-items: center;
+		justify-content: center;
+		cursor: pointer;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		display: inline;
+		user-select: none;
+		padding-left: 15px;
+		padding-right: 15px;
+		margin-left: 5px;
+	}
+	.container {
+		width: 50%;
+		margin: 0 auto;
+	}
+	.header {
+		margin: 0 auto;
+		font-size: 35px;
+		width:190px;
+	}
+	.section {
+		margin-bottom: 30px;
+	}
+	.table-div {
+		margin-top:30px;
+	}
+	.question {
+		margin-top: 40px;
+		font-weight: 400;
+		font-size: 20px;
+	}
+	.form-radio
+	{
+		 -webkit-appearance: none;
+		 -moz-appearance: none;
+		 appearance: none;
+		 display: inline-block;
+		 position: relative;
+		 background-color: #f1f1f1;
+		 color: #666;
+		 height: 30px;
+		 width: 30px;
+		 border: 0;
+		 border-radius: 50px;
+		 cursor: pointer;     
+		 margin-right: 7px;
+		 outline: none;
+	}
+	.form-radio:checked::before
+	{
+		 position: absolute;
+		 font: 13px/1 'Open Sans', sans-serif;
+		 left: 11px;
+		 top: 7px;
+		 content: '\02143';
+		 transform: rotate(40deg);
+	}
+	.form-radio:hover
+	{
+		 background-color: #f7f7f7;
+	}
+	.form-radio:checked
+	{
+		 background-color: #f1f1f1;
+	}
+	label
+	{
+		 font: 300 16px/1.7 'Open Sans', sans-serif;
+		 color: #666;
+		 cursor: pointer;
+	} 
+	table {
+		margin-top: 5px;
+	}
+	.row-header {
+		border-left: none;
+		width: 65px;
+	}
+	th {
+		width:165px;
+		border-bottom: 1px solid black;
+		border-left: 1px solid black;
+	}
+	tr { 
+		display: flex;
+	}
+	.selection {
+		display: flex;
+		flex-direction: column;
+	}
+	.options {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+	}
+	.table-header {
+		font-size: 20px;
+	}
+	.subheader {
+		font-size: 45px;
+		text-decoration:underline;
+	}
+	.reset {
+		width: 75px;
+		border-radius: 5px;
+		padding-top: 2px;
+		margin-top: 6px;
+		padding-bottom: 2px;
+		justify-items: center;
+		display: flex;
+		justify-content: center;
+		cursor: pointer;
+		  -webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			 -khtml-user-select: none; /* Konqueror HTML */
+			   -moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* Internet Explorer/Edge */
+					user-select: none; /* Non-prefixed version, currently
+										  supported by Chrome and Opera */
+	}
+	</style>
+</head>
+<body>
+<!--
+	<div id="test-div">This div is a test</div>
+	<button class="button">Click to save!</button>
+	<button class="reset">Click to reset</button>
+-->	
+
+<!--
+	Names with vals:
+	i
+		team-id 
+		match-no
+		starting-pos
+		preloaded
+	
+	s
+		autonomous
+		hit-1747
+		sandstorm-points (oof again)
+	
+	t
+		teleop-points (oof)
+		
+	e
+		climb-level
+		climb-assists
+		self-lift
+		win
+	n
+		notes
+	
+-->
+<div class="container">
+	<img src="src/overview.png" style="position: fixed;
+    right: 0;
+    width: 30%;"/>
+	<div class="header">Scout Form:</div>
+	<form action="#" id="data-form">
+		<div class="initials section">
+			<div class="subheader">Initials-</div>
+				<span class="question" style="text-decoration: none;">Team ID: #</span><input type="number" name="team-id" min="0" max="8000">
+					<br>
+				<span class="question" style="text-decoration: none;">Match No: </span><input type="number" name="match-no" min="0" max="999">
+					<br>
+				<div class="starting-pos">
+				</div>
+					<br>
+				<div class="question">What is the Robot's Preloaded Game Piece?: </div>
+				Hatch Panel: <input type="radio" name="pre-piece" value="hatch">
+					<br>
+				Cargo: <input type="radio" name="pre-piece" value="cargo">
+					<br>
+				None: <input type="radio" name="pre-piece" value="none" required>
+					<br>
+				
+				<div class="preloaded"></div>
+		</div>
+
+		<div class="sandstorm section">
+			<div class="subheader">Sandstorm phase-</div>
+			<div class="question">Is this team using autonomous? (make a good guess): </div>
+				<br>
+			Yes: <input type="radio" name="autonomous" value="true">
+				<br>
+			No: <input type="radio" name="autonomous" value="false" checked>
+				<br>
+			<div class="question">Did this team, at any point during sandstorm, hit our robot?</div>
+				<br>
+			Yes: <input type="radio" name="hit-1747" value="true">
+				<br>
+			No: <input type="radio" name="hit-1747" value="false" checked>
+				<br>			
+			<div class="question">Fill in the points made by this team during sandstorm:</div>
+			<div class="sandstorm-points"></div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div class="teleop section">
+			<div class="subheader">Teleop phase-</div>
+			<div class="question">Fill in the points made by this team during Teleop:</div>
+			<div class="teleop-points">
+				<div></div>
+			</div>
+		</div>
+		<div class="endgame section">
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+			<div class="subheader">End game-</div>
+			<div class="question">What level did the robot climb to? (0 means not on platform)</div>
+				<br>
+			<input type="number" name="robot-climb" min="0" max="3" value="0">
+			
+				<br>
+				
+			<div class="question">How many climb assists did this robot have?</div>
+				<br>
+			<input type="number" name="climb-assists" min="0" max="2" value="0">
+				
+			<div class="question">Did this robot LIFT itself, even if it didn't get the point? (running into the second level doesn't count)</div>
+				<br>
+			Yes: <input type="radio" name="self-lift" value="true">
+				<br>
+			No: <input type="radio" name="self-lift" value="false" checked>
+				<br>				
+			<div class="question">Finally, did this team win?</div>
+				<br>
+			Yes: <input type="radio" name="win" value="true" required>
+				<br>
+			No: <input type="radio" name="win" value="false">
+				<br>
+			Tie: <input type="radio" name="win" value="tie">
+		</div>
+		<div class="notes">
+			<div class="subheader">Enter any notes here:</div>
+			<span>Please write a reason if you filled out 0 points for sandstorm AND teleop</span>
+			<textarea name="notes-area">
+			</textarea>
+		</div>
+		<input type="submit">
+	</form>
+	<br>
+	<br>
+	<br>
+	<span>Don't open this cuz it's raw data.</span>
+	<div class="show-table button">Show</div>
+	<div class="raw-data hide"></div>
+</div>
+</body>
+</html>
