@@ -14,11 +14,13 @@ th {
 	height:40px;
 	justify-content: space-between;
 	padding:0;
+	position:relative;
 }
 th div {
 	width:100%;
 	height:100%;
 	background-color:red;
+	position: relative;
 }
 
 .team-header {
@@ -50,6 +52,20 @@ th div {
 	width:60px;
 	height:60px;
 }
+
+.information {
+    width: 180px;
+    height: 100px;
+    position: absolute;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    text-align: left;
+    padding-top: 3px;
+    padding-left: 3px;
+}
+
+
 </style>
 </head>
 <body>
@@ -67,14 +83,14 @@ th div {
 		<table class="l-rocket">
 			<tbody>
 				<tr class="1747-lrocket-1">
-					<th><div></div></th>
-					<th><div></div></th>
-					<th><div></div></th>
+					<th><div row="0" col="1"></div></th>
+					<th><div row="1" col="1"></div></th>
+					<th><div row="2" col="1"></div></th>
 				</tr>
 				<tr class="1747-lrocket-2">
-					<th><div></div></th>
-					<th><div></div></th>
-					<th><div></div></th>
+					<th><div row="0" col="0"></div></th>
+					<th><div row="1" col="0"></div></th>
+					<th><div row="2" col="0"></div></th>
 				</tr>
 			</tbody>
 		</table>
@@ -100,7 +116,7 @@ th div {
 			</tbody>
 		</table>
 		
-		<table class="l-rocket">
+		<table class="r-rocket">
 			<tbody>
 				<tr>
 					<th><div></div></th>
@@ -131,8 +147,25 @@ th div {
 			</tbody>
 		</table>
 </div>
+<!--
+<div class="points-grid">
 
-
+	<table class="l-rocket">
+		<tbody>
+	
+		<tr class="1747-lRocket-0">
+			<th><div style="opacity:1;"></div></th>
+			<th><div style="opacity:0.6666666666666666;"></div></th>
+			<th><div style="opacity:1;"></div></th>
+		</tr>
+		<tr class="1747-lRocket-1">
+			<th><div style="opacity:1.6666666666666667;"></div></th>
+			<th><div style="opacity:0.6666666666666666;"></div></th>
+			<th><div style="opacity:0.6666666666666666;"></div></th>
+		</tr>
+		</tbody>
+</div>
+-->
 <div class="rankings">
 </div>
 
