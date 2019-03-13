@@ -246,7 +246,7 @@ function buildDataObj(arr) {
 		let sRow = arr[i].initials.pos[1];
 		
 		//If both are numbers
-		if (!isNaN(col) && !isNaN(row)) {
+		if (!isNaN(sCol) && !isNaN(sRow)) {
 			obj.startingPos[sRow][sCol] += 1;
 		}
 			
@@ -273,7 +273,13 @@ function buildHeatMap(obj, teamNo) {
 	let shipMaxVal = getMaxVal(obj.ship);
 	let rRocketMaxVal = getMaxVal(obj.rRocket);
 	
-	
+	//since startingPos is unique, we'll write our logic here
+	let startingPosMaxVal = 0;
+	for (let i = 0; i < obj.startingPos.length; i++) {
+		for (let j = 0; j < obj.startingPos[i].length; j++) {
+			startingPosMaxVal = (obj.startingPos[i][j] > startingPosMaxVal) ? obj.startingPos[i][j] : startingPosMaxVal;
+		}
+	}
 	
 	
 	let map = "<div class=\"heatMap\">";
@@ -289,7 +295,7 @@ function buildHeatMap(obj, teamNo) {
 						let hatchPanelVal = (obj.lRocket[sandstorm][j][i][panel] + obj.lRocket[teleop][j][i][panel]) * 2;
 						let cargoVal = (obj.lRocket[sandstorm][j][i][cargo] + obj.lRocket[sandstorm][j][i][cargo]) * 3;
 						map += "<th type=\"lRocket\" teamNo=\""+teamNo+
-						\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/lRocketMaxVal)+";\"></div></th>";
+						"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/lRocketMaxVal)+";\"></div></th>";
 					}
 				map += "</tr>";
 			}
@@ -301,7 +307,7 @@ function buildHeatMap(obj, teamNo) {
 				for (let j = 0; j < obj.ship[teleop][i].length; j++) {
 					let hatchPanelVal = (obj.ship[sandstorm][i][j][panel] + obj.ship[teleop][i][j][panel]) * 2;
 					let cargoVal = (obj.ship[sandstorm][i][j][cargo] + obj.ship[teleop][i][j][cargo]) * 3;
-					map += "<th type=\"ship\" teamNo=\""+teamNo+"\" row=\""j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/shipMaxVal)+";\"></div></th>";
+					map += "<th type=\"ship\" teamNo=\""+teamNo+"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/shipMaxVal)+";\"></div></th>";
 				}
 				map += "</tr>";
 			}
@@ -311,9 +317,9 @@ function buildHeatMap(obj, teamNo) {
 			for (let i = 0; i < obj.rRocket[teleop][0].length; i++) {
 				map += "<tr class=\""+teamNo+"-rRocket\">";
 				for (let j = obj.rRocket[teleop].length - 1; j >= 0; j--) {
-					let hatchPanelVal = (obj.rRocket[sandstorm][j][i][panel] + obj.ship[teleop][i][j][panel]) * 2;
-					let cargoVal = (obj.rRocket[sandstorm][j][i][cargo] + obj.ship[teleop][i][j][cargo]) * 3;
-					map += "<th type=\"rRocket\" teamNo=\""+teamNo+"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"++";\"></div></th>";
+					let hatchPanelVal = (obj.rRocket[sandstorm][j][i][panel] + obj.rRocket[teleop][j][i][panel]) * 2;
+					let cargoVal = (obj.rRocket[sandstorm][j][i][cargo] + obj.rRocket[teleop][j][i][cargo]) * 3;
+					map += "<th type=\"rRocket\" teamNo=\""+teamNo+"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/rRocketMaxVal)+";\"></div></th>";
 				}
 				map += "</tr>";
 			}
@@ -325,6 +331,13 @@ function buildHeatMap(obj, teamNo) {
 	//for starting pos
 	map += "<div class=\"initials-grid\">";
 		map += "<table class=\"starting-pos\"><tbody>";
+			for (let i = 0; i < obj.startingPos.length; i++) {
+				map += "<tr class=\""+teamNo+"-startingPos\">";
+					for (let j = 0; j < obj.startingPos[i].length; j++) {
+						map += "<th type=\"starting-pos\" teamNo=\""+teamNo+"\" row=\""+i+"\" col=\""+j+"\"><div style=\"opacity:"+obj.startingPos[i][j]/startingPosMaxVal+";\"></div></th>";
+					}
+				map += "</tr>";
+			}
 		map += "</tbody></table>";
 	map += "</div>";
 	
@@ -341,7 +354,7 @@ function getMaxVal(arr) {
 		for (let j = 0; j < arr[teleop][i].length; j++) {
 			let hatchPanelSum = (arr[sandstorm][i][j][panel] + arr[teleop][i][j][panel]) * 2;
 			let cargoSum = (arr[sandstorm][i][j][cargo] + arr[teleop][i][j][cargo]) * 3;	
-			maxVal = ((cargoSum + hatchPanelSum) > shipMaxVal) ? cargoSum + hatchPanelSum : maxVal;
+			maxVal = ((cargoSum + hatchPanelSum) > maxVal) ? cargoSum + hatchPanelSum : maxVal;
 		}
 	}
 	return maxVal;
