@@ -282,23 +282,41 @@ function buildHeatMap(obj, teamNo) {
 	map += "<div class=\"points-grid\">";
 	
 		map += "<table class=\"l-rocket\"><tbody>";
+			//I know this value is hardcoded. It's a canary.
 			for (let i = 1; i >= 0; i--) {
 				map += "<tr class=\""+teamNo+"-lRocket\">";
 					for (let j = 0; j < obj.lRocket[teleop].length; j++) {
-						let hatchPanelVal = total[j][i][panel] * 2;
-						let cargoVal = total[j][i][cargo] * 3;
+						let hatchPanelVal = (obj.lRocket[sandstorm][j][i][panel] + obj.lRocket[teleop][j][i][panel]) * 2;
+						let cargoVal = (obj.lRocket[sandstorm][j][i][cargo] + obj.lRocket[sandstorm][j][i][cargo]) * 3;
 						map += "<th type=\"lRocket\" teamNo=\""+teamNo+
 						\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/lRocketMaxVal)+";\"></div></th>";
 					}
 				map += "</tr>";
 			}
-		
 		map += "</tbody></table>";
 		
 		map += "<table class=\"cargo-ship\"><tbody>";
+			for (let i = 0; i < obj.ship[teleop].length; i++) {
+				map += "<tr class=\""+teamNo+"-ship\">";
+				for (let j = 0; j < obj.ship[teleop][i].length; j++) {
+					let hatchPanelVal = (obj.ship[sandstorm][i][j][panel] + obj.ship[teleop][i][j][panel]) * 2;
+					let cargoVal = (obj.ship[sandstorm][i][j][cargo] + obj.ship[teleop][i][j][cargo]) * 3;
+					map += "<th type=\"ship\" teamNo=\""+teamNo+"\" row=\""j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/shipMaxVal)+";\"></div></th>";
+				}
+				map += "</tr>";
+			}
 		map += "</tbody></table>";
 		
 		map += "<table class=\"r-rocket\"><tbody>";
+			for (let i = 0; i < obj.rRocket[teleop][0].length; i++) {
+				map += "<tr class=\""+teamNo+"-rRocket\">";
+				for (let j = obj.rRocket[teleop].length - 1; j >= 0; j--) {
+					let hatchPanelVal = (obj.rRocket[sandstorm][j][i][panel] + obj.ship[teleop][i][j][panel]) * 2;
+					let cargoVal = (obj.rRocket[sandstorm][j][i][cargo] + obj.ship[teleop][i][j][cargo]) * 3;
+					map += "<th type=\"rRocket\" teamNo=\""+teamNo+"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"++";\"></div></th>";
+				}
+				map += "</tr>";
+			}
 		map += "</tbody></table>";
 		
 	map += "</div>";
