@@ -26,17 +26,29 @@ th div {
 .team-header {
 	font-size: 30px;
 }
+.heatMap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #3c00ff;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
 .container {
     display: flex;
     width: 800px;
     flex-direction: column;
-    border: 1px solid black;
-    padding-left: 10px;
-    padding-right: 10px;
+    /* border: 1px solid black; */
+    /* padding-left: 10px; */
+    /* padding-right: 10px; */
     align-items: center;
-    padding-top: 5px;
+    /* padding-top: 5px; */
     /* justify-content: space-between; */
-    padding-bottom: 5px;
+    /* padding-bottom: 5px; */
     margin: 0 auto;
 }
 .points-grid {
@@ -79,73 +91,146 @@ th div {
 <div class="line"></div>
 
 <div class="container">
-	<div class="points-grid">
-		<table class="l-rocket">
-			<tbody>
-				<tr class="1747-lrocket-1">
-					<th><div row="0" col="1"></div></th>
-					<th><div row="1" col="1"></div></th>
-					<th><div row="2" col="1"></div></th>
-				</tr>
-				<tr class="1747-lrocket-2">
-					<th><div row="0" col="0"></div></th>
-					<th><div row="1" col="0"></div></th>
-					<th><div row="2" col="0"></div></th>
-				</tr>
-			</tbody>
-		</table>
-		
-		<table class="cargo-ship">
-			<tbody>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-			</tbody>
-		</table>
-		
-		<table class="r-rocket">
-			<tbody>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-			</tbody>
-		</table>
+	<div class="heatMap" id="0">
+		<div class="points-grid">
+			<table class="l-rocket">
+				<tbody>
+					<tr class="1747-lrocket-1">
+						<th><div row="0" col="1"></div></th>
+						<th><div row="1" col="1"></div></th>
+						<th><div row="2" col="1"></div></th>
+					</tr>
+					<tr class="1747-lrocket-2">
+						<th><div row="0" col="0"></div></th>
+						<th><div row="1" col="0"></div></th>
+						<th><div row="2" col="0"></div></th>
+					</tr>
+				</tbody>
+			</table>
+			
+			<table class="cargo-ship">
+				<tbody>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+				</tbody>
+			</table>
+			
+			<table class="r-rocket">
+				<tbody>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="initials-grid">
+			<table class="starting-pos">
+				<tbody>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="initials-grid">
-		<table class="starting-pos">
-			<tbody>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-				<tr>
-					<th><div></div></th>
-					<th><div></div></th>
-					<th><div></div></th>
-				</tr>
-			</tbody>
-		</table>
+	<div class="heatMap" id="1">
+		<div class="points-grid">
+			<table class="l-rocket">
+				<tbody>
+					<tr class="1747-lrocket-1">
+						<th><div row="0" col="1"></div></th>
+						<th><div row="1" col="1"></div></th>
+						<th><div row="2" col="1"></div></th>
+					</tr>
+					<tr class="1747-lrocket-2">
+						<th><div row="0" col="0"></div></th>
+						<th><div row="1" col="0"></div></th>
+						<th><div row="2" col="0"></div></th>
+					</tr>
+				</tbody>
+			</table>
+			
+			<table class="cargo-ship">
+				<tbody>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+				</tbody>
+			</table>
+			
+			<table class="r-rocket">
+				<tbody>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="initials-grid">
+			<table class="starting-pos">
+				<tbody>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+					<tr>
+						<th><div></div></th>
+						<th><div></div></th>
+						<th><div></div></th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 <!--
 <div class="points-grid">

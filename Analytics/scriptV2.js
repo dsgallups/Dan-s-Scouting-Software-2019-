@@ -51,6 +51,9 @@ const cargo = 1;
 	
 	Note that obj.sandstorm.points is empty. That means that this team scored 0 points in sandstorm. Any object in that array follows the structures in obj.teleop.points.
 	
+	You'll notice that some of these attributes named weirdly (like "cargo_type," which should be "point"). This was my own mistake. If I have enough time, I'll go back and rename some of those keys. If it hasn't been done and you wanna do it, please let Daniel know.
+	
+	
 	IF YOU HAVE ANY QUESTIONS ABOUT THIS OBJECT AND WHAT EACH PROPERTY MEANS, PLEASE EMAIL DANIEL G. AT dgallups@purdue.edu.
 	If Daniel isn't available, then look for Elan Mizhiritsky, or any programmer.
 	
@@ -71,7 +74,36 @@ const cargo = 1;
 
 //Now, let's get started
 $(document).ready(function() {
+	//This'll hold our teams
+	let teams = [];
 	
+	//This is our event listener which triggers our script
+	$('.teams').on('input',function() {
+		//From a java perspective, this is our "main" function that executes after every input
+		
+		//Store our teams
+		teams = $('.teams').val().split(',');
+		
+		//reset the container
+		$('.container').html("");
+		
+		//Build data for each team in arr
+		for (let i = 0; i < teams.length; i++) {
+			let currentTeam = teams[i];
+			
+			//Per our instructions:
+			//arr already exists
+			let teamObj = buildTeamObjArr(currentTeam, arr);
+			
+			let dataObj = buildDataObj(teamObj);
+			
+			let section = buildHeatMap(dataObj, currentTeam);
+			
+			$('.container').append(section);
+			
+		}
+		//aaaaand we're done! cake, right?
+	});
 	
 });
 
@@ -103,7 +135,6 @@ function buildTeamObjArr(teamNo, arr) {
 	return teamArr;
 }
 
-
 /*
 	buildDataObj(arr) requires one input:
 		arr - An array that contains objects that match our original structure.
@@ -125,24 +156,175 @@ function buildTeamObjArr(teamNo, arr) {
 */
 function buildDataObj(arr) {
 	let obj = {
-		lRocket: [],
-		ship: [],
-		rRocket: [],
-		startingPos: []
+		lRocket: [
+			[
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]]
+			],
+			[
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]]				
+			]
+		],
+		ship: [
+			[
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]]
+			],
+			[
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]]
+			]
+		],
+		rRocket: [
+			[
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]]
+			],
+			[
+				[[0,0],[0,0]],
+				[[0,0],[0,0]],
+				[[0,0],[0,0]]				
+			]
+		],
+		startingPos: [
+			[0,0,0],
+			[0,0,0]
+		]
 	}
 	
+	//Now, let's compile this data
+	//REMINDER: arr[sandstorm/teleop][row][col][cargo/panel]
+	for (let i = 0; i < arr.length; i++) {
+		//Sandstorm
+		for (let j = 0; j < arr[i].sandstorm.points.length; j++) {
+			let row = arr[i].sandstorm.points[j].row;
+			let col = arr[i].sandstorm.points[j].col;
+			let vehicle = arr[i].sandstorm.points[j].vehicle;
+			
+			//make this easier for ourselves
+			let point = (arr[i].sandstorm.points[j].cargo_type == "panel") ? panel : cargo;
+			
+			//Eval for object
+			if (vehicle == "ship") {
+				obj.ship[sandstorm][row][col][point] += 1;
+			} else if (vehicle == "rRocket") {
+				obj.rRocket[sandstorm][row][col][point] += 1;
+			} else if (vehicle == "lRocket") {
+				obj.lRocket[sandstorm][row][col][point] += 1;
+			}
+			
+			
+		}
+		//Teleop
+		for (let j = 0; j < arr[i].teleop.points.length; j++) {
+			let row = arr[i].teleop.points[j].row;
+			let col = arr[i].teleop.points[j].col;
+			let vehicle = arr[i].teleop.points[j].vehicle;
+			let point = (arr[i].teleop.points[j].cargo_type == "panel") ? panel : cargo;
+			
+			//Eval for object
+			if (vehicle == "ship") {
+				obj.ship[teleop][row][col][point] += 1;
+			} else if (vehicle == "rRocket") {
+				obj.rRocket[teleop][row][col][point] += 1;
+			} else if (vehicle == "lRocket") {
+				obj.lRocket[teleop][row][col][point] += 1;
+			}
+		}
+		
+		//Starting position:
+		//Note, earlier records didn't have this information, and therefore those values are "N". To combat this, we'll if statement it
+		let sCol = arr[i].initials.pos[0];
+		let sRow = arr[i].initials.pos[1];
+		
+		//If both are numbers
+		if (!isNaN(col) && !isNaN(row)) {
+			obj.startingPos[sRow][sCol] += 1;
+		}
+			
+	}
 	
+	return obj;
 	
 }
+
 /*
 	buildHeatMap(obj) requires one input:
 		obj - The object returned by buildDataObj(arr). Please don't put anything else in this function.
 		
 	Returns a string containing html elements that should be appended to a container element.
 	
+	Specs:
+		Combines both sandstorm and teleop points.
 
 */
-function buildHeatMap(obj) {
-	let map = "";
+function buildHeatMap(obj, teamNo) {
+	//before we do anything else, we'll need max values for each section
+	//max values are calculated by sum of sandstorm and teleop in a particular section
+	let lRocketMaxVal = getMaxVal(obj.lRocket);
+	let shipMaxVal = getMaxVal(obj.ship);
+	let rRocketMaxVal = getMaxVal(obj.rRocket);
+	
+	
+	
+	
+	let map = "<div class=\"heatMap\">";
+	
+	//points-grid is separate from initials-grid, contains our heatmap for points
+	map += "<div class=\"points-grid\">";
+	
+		map += "<table class=\"l-rocket\"><tbody>";
+			for (let i = 1; i >= 0; i--) {
+				map += "<tr class=\""+teamNo+"-lRocket\">";
+					for (let j = 0; j < obj.lRocket[teleop].length; j++) {
+						let hatchPanelVal = total[j][i][panel] * 2;
+						let cargoVal = total[j][i][cargo] * 3;
+						map += "<th type=\"lRocket\" teamNo=\""+teamNo+
+						\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/lRocketMaxVal)+";\"></div></th>";
+					}
+				map += "</tr>";
+			}
+		
+		map += "</tbody></table>";
+		
+		map += "<table class=\"cargo-ship\"><tbody>";
+		map += "</tbody></table>";
+		
+		map += "<table class=\"r-rocket\"><tbody>";
+		map += "</tbody></table>";
+		
+	map += "</div>";
+	
+	
+	//for starting pos
+	map += "<div class=\"initials-grid\">";
+		map += "<table class=\"starting-pos\"><tbody>";
+		map += "</tbody></table>";
+	map += "</div>";
+	
+	
+	map += "</div>";
 	return map;
+}
+
+//specific function, not to be used outside buildHeatMap()
+function getMaxVal(arr) {
+	//arr[sandstorm/teleop][row][col][cargo/panel]
+	let maxVal = 0;
+	for (let i = 0; i < arr[teleop].length; i++) {
+		for (let j = 0; j < arr[teleop][i].length; j++) {
+			let hatchPanelSum = (arr[sandstorm][i][j][panel] + arr[teleop][i][j][panel]) * 2;
+			let cargoSum = (arr[sandstorm][i][j][cargo] + arr[teleop][i][j][cargo]) * 3;	
+			maxVal = ((cargoSum + hatchPanelSum) > shipMaxVal) ? cargoSum + hatchPanelSum : maxVal;
+		}
+	}
+	return maxVal;
 }
