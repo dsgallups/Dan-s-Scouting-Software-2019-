@@ -214,20 +214,27 @@ $('.teams').on('input', function() {
 		return div;
 	} //mapPoints
 	
-	
-	function buildMapArr(points, name) {
+	/*
+		REQUIRES THE FOLLOWING:
+		(arr) points - [arr of obj.sandstorm.points OR obj.teleop.points]
+		(string) type - [lRocket, rRocket, ship]
+		
+		returns a array in mapArr format (which can now be used for our buildVehicle function)
+		
+	*/
+	function buildMapArr(points, type) {
 		const panel = 0;
 		const cargo = 1;
 		//points[i].cargo_type
 		try {
 			var newArr;
-			if (name == "lRocket" || name == "rRocket") {		
+			if (type == "lRocket" || type == "rRocket") {		
 				newArr = [
 					[[0,0], [0,0]],
 					[[0,0], [0,0]],
 					[[0,0], [0,0]]
 				];
-			} else if (name == "ship") {
+			} else if (type == "ship") {
 				newArr = [
 					[[0,0], [0,0]],
 					[[0,0], [0,0]],
@@ -241,13 +248,13 @@ $('.teams').on('input', function() {
 			}
 			
 			for (let m = 0; m < points.length; m++) {
-				if (points[m].vehicle == name) {
+				if (points[m].vehicle == type) {
 					//this object actually has our col and row already, so we'll use them.
 					let row = points[m].row;
 					let col = points[m].col;
-					let type = points[m].cargo_type;
-					newArr[row][col][panel] += (type == "panel" || type == "both") ? 1 : 0;
-					newArr[row][col][cargo] += (type == "cargo" || type == "both") ? 1 : 0;
+					let obj = points[m].cargo_type;
+					newArr[row][col][panel] += (obj == "panel" || obj == "both") ? 1 : 0;
+					newArr[row][col][cargo] += (obj == "cargo" || obj == "both") ? 1 : 0;
 				}
 			}
 			
@@ -258,6 +265,22 @@ $('.teams').on('input', function() {
 		}
 	}	
 	
+	/*
+		This function is pretty similar to buildMapArr(), but is distinctly for the starting position. Hopefully we'll come back and revise this code one day.
+		
+		
+	*/
+	
+	function buildPosArr(arr) {
+	}
+	
+	/*
+		REQUIRES THE FOLLOWING:
+		(string) Team number
+		(mapArr/arr) sandstorm
+		(mapArr/arr) teleop
+		(string) type - [lRocket, rRocket, Ship]
+	*/
 	function buildVehicle(teamNo, sandstorm, teleop, type) {
 		const panel = 0;
 		const cargo = 1;
@@ -523,6 +546,9 @@ $(document).on('mouseenter','th', function() {
 		div += "<span>Teleop hatch panels: " + divObj.rRocketTeleop[row][col][panel] + "</span><br>";
 		div += "<span>Sandstorm cargo: " + divObj.rRocketSandstorm[row][col][cargo] + "</span><br>";
 		div += "<span>Teleop cargo: " + divObj.rRocketTeleop[row][col][cargo] + "</span><br>";		
+	} else if ($(this).attr("type") == "starting-pos") {
+		//This currently doesn't exist in divObj
+		div += "<span>Starting this position: "++"</span><br>";
 	}
 	div += "</div>";
 	
