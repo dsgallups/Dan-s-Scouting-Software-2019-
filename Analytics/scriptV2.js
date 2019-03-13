@@ -98,23 +98,27 @@ $(document).ready(function() {
 		//Build data for each team in arr
 		for (let i = 0; i < teams.length; i++) {
 			let currentTeam = teams[i];
+			let teamObjArr = buildTeamObjArr(currentTeam, arr);
 			
-			//Per our instructions:
-			//arr already exists
-			let teamObj = buildTeamObjArr(currentTeam, arr);
-			
-			let dataObj = buildDataObj(teamObj);
-			logObj(dataObj);
-			//push it to our allTeamsData
-			allTeamsData.push(dataObj);
-			
-			let section = buildHeatMap(dataObj, currentTeam);
+			let section = "<div class=\"team-info\">";
+				//Per our instructions:
+				//arr already exists
+				section += buildInfo(teamObjArr)
+				
+				//<div class="heatMap">
+				let dataObj = buildDataObj(teamObjArr);
+				allTeamsData.push(dataObj);
+				section += buildHeatMap(dataObj, currentTeam);
+				//buildHeatMap(buildDataObj(buildTeamObjArr(currentTeam, arr)), currentTeam)
+				//</div>
+			section += "</div>";
 			
 			$('.container').append(section);
 			
 		}
-		//aaaaand we're done! cake, right?
 	});
+	
+	
 	
 	//Details to heat map
 	$(document).on('mouseenter','th',function() {
@@ -185,6 +189,107 @@ function buildTeamObjArr(teamNo, arr) {
 		teamArr.push(arr[indices[i]]);
 	}
 	return teamArr;
+}
+
+
+function buildInfo(arr) {
+	//passed array follows object structure
+	
+	/*
+		Example of what this should return: 
+		<div class="basic-info">
+			<div>Team #0000 - </div><br>
+			<div><span>Wins/Loses/Ties:</span> 0:0:0</div>
+			<div><span>Highest climb level:</span> 0</div>
+			<div><span>Is this team likely to use autonomous?</span> No (0:0)</div>
+			<div><span>Most points scored in teleop:</span> 0</div>
+			<div><span>Notes:</span> </div>
+			<ul>
+				<li>Note #1</li>
+				<li>Note #2</li>
+			</ul>
+			
+			buildHeatMap(buildDataObj(buildTeamObjArr(currentTeam, arr)), currentTeam)
+		</div>
+	*/
+	let matchResults = getMatchResults(arr);
+	let hasAuto = (usingAutonomous) ? "Yes" : "No";
+	
+	let section = "<div class=\"basic-info\">";
+		section += "<div>Team #" + arr[0].initials.team_id + "</div><br>";
+		section += "<div><span>Wins/Losses/Ties:</span> "+matchResults["wins"]+":"+matchResults["losses"]+":"+matchResults["ties"]+"</div>";
+		section += "<div><span>Highest climb level:</span> " + getHighestClimbLevel(arr) + "</div>";
+		section += "<div><span>Is this team likely to use autonomous?</span> " + hasAuto + "</div>";
+		section += "<div><span>Most points scored in teleop: </span> " + getTeleopHighscore(arr) + "</div>";
+		section += "<div><span>Notes:</span></div>";
+		section += getNotes(arr);
+	section += "</div>";
+	return section;
+}
+
+function getMatchResults(arr) {
+	//passed array follows object structure
+	let obj = {
+		wins: 0,
+		losses: 0,
+		ties: 0
+	}
+	for (let i = 0; i < arr.length; i++) {
+		if (arr[i].endgame.win == "true") {
+			obj.wins += 1;
+		} else if (arr[i].endgame.win == "false") {
+			obj.losses += 1;
+		} else {
+			console.log("match no = " + arr[i].initials.match_no);
+			obj.ties += 1;
+		}
+	}
+	return obj;
+}
+
+function getHighestClimbLevel(arr) {
+	let climbLevel = 0;
+	for (let i = 0; i < arr.length; i++) {
+		try {
+			climbLevel = (arr[i].endgame.climb_level > climbLevel) ? arr[i].endgame.climb_level : climbLevel;
+		} catch (e) {
+		}
+	}
+	return climbLevel;
+}
+
+function usingAutonomous(arr) {
+	let posAutoCount = 0;
+	for (let i = 0; i < arr.length; i++ ) {
+		posAutoCount += (arr[i].sandstorm.autonomous == "true") ? 1 : -1;
+	}
+	return posAutoCount > 0;
+}
+
+function getTeleopHighscore(arr) {
+	let score = 0;
+	for (let i = 0; i < arr.length; i++) {
+		let runningScore = 0;
+		for (let j = 0; j < arr[i].teleop.points.length; j++) {
+			if (arr[i].teleop.points[j].cargo_type == "cargo") {
+				runningScore += 2;
+			} else if (arr[i].teleop.points[j].cargo_type == "panel") {
+				runningScore += 3;
+			}
+		}
+		score = (runningScore > score) ? runningScore : score;
+	}
+	return score;
+}
+function getNotes(arr) {
+	let section = "<ul>";
+	for (let i = 0; i < arr.length; i++) {
+		if (arr[i].notes) {
+			section += "<li>"+arr[i].notes+"</li>";
+		}
+	}
+	section += "</ul>";
+	return section;
 }
 
 /*
@@ -323,11 +428,11 @@ function buildHeatMap(obj, teamNo) {
 	//before we do anything else, we'll need max values for each section
 	//max values are calculated by sum of sandstorm and teleop in a particular section
 	let lRocketMaxVal = getMaxVal(obj.lRocket);
-	console.log("lRocketMaxVal = " + lRocketMaxVal);
+	//console.log("lRocketMaxVal = " + lRocketMaxVal);
 	let shipMaxVal = getMaxVal(obj.ship);
-	console.log("shipMaxVal = " + shipMaxVal);
+	//console.log("shipMaxVal = " + shipMaxVal);
 	let rRocketMaxVal = getMaxVal(obj.rRocket);
-	console.log("rRocketMaxVal = " + rRocketMaxVal);
+	//console.log("rRocketMaxVal = " + rRocketMaxVal);
 	
 	//since startingPos is unique, we'll write our logic here
 	let startingPosMaxVal = 0;
