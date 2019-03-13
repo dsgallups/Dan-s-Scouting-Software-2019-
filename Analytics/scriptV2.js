@@ -73,19 +73,27 @@ const cargo = 1;
 */
 
 //Now, let's get started
+
+
+
+
 $(document).ready(function() {
 	//This'll hold our teams
 	let teams = [];
+	//This'll hold data for later (heatmap details)
+	let allTeamsData = [];
 	
 	//This is our event listener which triggers our script
 	$('.teams').on('input',function() {
 		//From a java perspective, this is our "main" function that executes after every input
-		
 		//Store our teams
 		teams = $('.teams').val().split(',');
 		
 		//reset the container
 		$('.container').html("");
+		
+		//reset our allTeamsDataObj
+		allTeamsData = [];
 		
 		//Build data for each team in arr
 		for (let i = 0; i < teams.length; i++) {
@@ -96,6 +104,9 @@ $(document).ready(function() {
 			let teamObj = buildTeamObjArr(currentTeam, arr);
 			
 			let dataObj = buildDataObj(teamObj);
+			logObj(dataObj);
+			//push it to our allTeamsData
+			allTeamsData.push(dataObj);
 			
 			let section = buildHeatMap(dataObj, currentTeam);
 			
@@ -103,6 +114,47 @@ $(document).ready(function() {
 			
 		}
 		//aaaaand we're done! cake, right?
+	});
+	
+	//Details to heat map
+	$(document).on('mouseenter','th',function() {
+		//logic to append our div
+		let width = 180;
+		let height = 100;
+		let type = $(this).attr("type");
+		let row = $(this).attr("row");
+		let col = $(this).attr("col");
+		let teamNo = $(this).attr("teamno");
+		let spacer = 10;
+		let divX = $(this).width()/2;
+		let divY = 0;
+		let blockY = (divY - (spacer+height));
+		let blockX = (divX - (width/2));
+		
+		//Build our div
+		let div = "<div class=\"information\" style=\"top:"+blockY+"px;left:"+blockX+"px;\">";
+		
+		//use our allTeamsData variable here:
+		for (let i = 0; i < allTeamsData.length; i++) {
+			if (teamNo == allTeamsData[i].teamNo) {
+				//console.log("sandstorm: " + allTeamsData[i][type][sandstorm][row][col]);
+				//console.log("teleop: " + allTeamsData[i][type][teleop][row][col]);
+				if (type == "startingPos") {
+					div += "<span>times started here: " + allTeamsData[i][type][row][col] + "</span><br>";
+				} else {
+					div += "<span>Sandstorm hatch panels: " + allTeamsData[i][type][sandstorm][row][col][panel] + "</span><br>";
+					div += "<span>Teleop hatch panels: " + allTeamsData[i][type][teleop][row][col][panel] + "</span><br>";
+					div += "<span>Sandstorm cargo: " + allTeamsData[i][type][sandstorm][row][col][cargo] + "</span><br>";
+					div += "<span>Teleop cargo: " + allTeamsData[i][type][teleop][row][col][cargo] + "</span><br>";
+				}
+			}
+		}
+		div += "</div>";
+		$(this).append(div);
+	});
+	//delete all elements with the tag .information
+	$(document).on('mouseleave','th',function() {
+		$('.information').remove();
 	});
 	
 });
@@ -156,6 +208,7 @@ function buildTeamObjArr(teamNo, arr) {
 */
 function buildDataObj(arr) {
 	let obj = {
+		teamNo: arr[0].initials.team_id || 0,
 		lRocket: [
 			[
 				[[0,0],[0,0]],
@@ -270,8 +323,11 @@ function buildHeatMap(obj, teamNo) {
 	//before we do anything else, we'll need max values for each section
 	//max values are calculated by sum of sandstorm and teleop in a particular section
 	let lRocketMaxVal = getMaxVal(obj.lRocket);
+	console.log("lRocketMaxVal = " + lRocketMaxVal);
 	let shipMaxVal = getMaxVal(obj.ship);
+	console.log("shipMaxVal = " + shipMaxVal);
 	let rRocketMaxVal = getMaxVal(obj.rRocket);
+	console.log("rRocketMaxVal = " + rRocketMaxVal);
 	
 	//since startingPos is unique, we'll write our logic here
 	let startingPosMaxVal = 0;
@@ -293,7 +349,7 @@ function buildHeatMap(obj, teamNo) {
 				map += "<tr class=\""+teamNo+"-lRocket\">";
 					for (let j = 0; j < obj.lRocket[teleop].length; j++) {
 						let hatchPanelVal = (obj.lRocket[sandstorm][j][i][panel] + obj.lRocket[teleop][j][i][panel]) * 2;
-						let cargoVal = (obj.lRocket[sandstorm][j][i][cargo] + obj.lRocket[sandstorm][j][i][cargo]) * 3;
+						let cargoVal = (obj.lRocket[sandstorm][j][i][cargo] + obj.lRocket[teleop][j][i][cargo]) * 3;
 						map += "<th type=\"lRocket\" teamNo=\""+teamNo+
 						"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/lRocketMaxVal)+";\"></div></th>";
 					}
@@ -307,7 +363,7 @@ function buildHeatMap(obj, teamNo) {
 				for (let j = 0; j < obj.ship[teleop][i].length; j++) {
 					let hatchPanelVal = (obj.ship[sandstorm][i][j][panel] + obj.ship[teleop][i][j][panel]) * 2;
 					let cargoVal = (obj.ship[sandstorm][i][j][cargo] + obj.ship[teleop][i][j][cargo]) * 3;
-					map += "<th type=\"ship\" teamNo=\""+teamNo+"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/shipMaxVal)+";\"></div></th>";
+					map += "<th type=\"ship\" teamNo=\""+teamNo+"\" row=\""+i+"\" col=\""+j+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/shipMaxVal)+";\"></div></th>";
 				}
 				map += "</tr>";
 			}
@@ -334,7 +390,7 @@ function buildHeatMap(obj, teamNo) {
 			for (let i = 0; i < obj.startingPos.length; i++) {
 				map += "<tr class=\""+teamNo+"-startingPos\">";
 					for (let j = 0; j < obj.startingPos[i].length; j++) {
-						map += "<th type=\"starting-pos\" teamNo=\""+teamNo+"\" row=\""+i+"\" col=\""+j+"\"><div style=\"opacity:"+obj.startingPos[i][j]/startingPosMaxVal+";\"></div></th>";
+						map += "<th type=\"startingPos\" teamNo=\""+teamNo+"\" row=\""+i+"\" col=\""+j+"\"><div style=\"opacity:"+obj.startingPos[i][j]/startingPosMaxVal+";\"></div></th>";
 					}
 				map += "</tr>";
 			}
@@ -358,4 +414,39 @@ function getMaxVal(arr) {
 		}
 	}
 	return maxVal;
+}
+
+//For testing
+function logObj(dataObj) {
+	//arr[sandstorm/teleop][row][col][cargo/panel]
+	console.log("Team #" + dataObj.teamNo);
+	console.log("lRocket: [");
+	for (let i = 0; i < dataObj.lRocket.length; i++) {
+		console.log("[");
+		for (let j = 0; j < dataObj.lRocket[i].length; j++) {
+			let statement = "[["+dataObj.lRocket[i][j][0][0]+","+dataObj.lRocket[i][j][0][1]+"],["+dataObj.lRocket[i][j][1][0]+","+dataObj.lRocket[i][j][1][1]+"]],";
+			console.log(statement);
+		}
+		console.log("]");
+	}
+	console.log("]");
+	console.log("ship: ["); 
+	for (let i = 0; i < dataObj.ship.length; i++) {
+		console.log("[");
+		for (let j = 0; j < dataObj.ship[i].length; j++) {
+			let statement = "[["+dataObj.ship[i][j][0][0]+","+dataObj.ship[i][j][0][1]+"],["+dataObj.ship[i][j][1][0]+","+dataObj.ship[i][j][1][1]+"]],";
+			console.log(statement);
+		}
+		console.log("]");
+	}
+	console.log("]");
+	console.log("rRocket: ["); 
+	for (let i = 0; i < dataObj.rRocket.length; i++) {
+		console.log("[");
+		for (let j = 0; j < dataObj.rRocket[i].length; j++) {
+			let statement = "[["+dataObj.rRocket[i][j][0][0]+","+dataObj.rRocket[i][j][0][1]+"],["+dataObj.rRocket[i][j][1][0]+","+dataObj.rRocket[i][j][1][1]+"]],";
+			console.log(statement);
+		}
+		console.log("]");
+	}
 }
