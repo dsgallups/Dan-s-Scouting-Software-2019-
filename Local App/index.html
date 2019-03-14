@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Scout v1.0</title>
+	<title>Scout v1.1</title>
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 	<script src="src/jquery.js"></script>
 	<script src="src/script.js"></script>
@@ -147,6 +147,15 @@
 					user-select: none; /* Non-prefixed version, currently
 										  supported by Chrome and Opera */
 	}
+	textarea {
+		resize: none;
+		font-family: 'Ubuntu', sans-serif;
+		margin-top: 10px;
+		width: 400px;
+		height: 120px;
+		padding: 9px;
+		margin-bottom: 10px;
+	}
 	</style>
 </head>
 <body>
@@ -280,10 +289,10 @@
 			Tie: <input type="radio" name="win" value="tie">
 		</div>
 		<div class="notes">
-			<div class="subheader">Enter any notes here:</div>
-			<span>Please write a reason if you filled out 0 points for sandstorm AND teleop</span>
-			<textarea name="notes-area">
-			</textarea>
+			<div class="subheader" style="margin-bottom: 35px;">Enter any notes here:</div>
+			<span>Please write a reason if you filled out 0 points for sandstorm AND teleop, and <span style="font-weight:800;color:#005dbf;">PLEASE describe this robot's strategy during the match.</span></span>
+				<br>
+			<textarea name="notes-area"></textarea>
 		</div>
 		<input type="submit">
 	</form>
