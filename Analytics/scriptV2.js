@@ -369,16 +369,19 @@ function buildDataObj(arr) {
 			let vehicle = arr[i].sandstorm.points[j].vehicle;
 			
 			//make this easier for ourselves
-			let point = (arr[i].sandstorm.points[j].cargo_type == "panel") ? panel : cargo;
+			let point = arr[i].sandstorm.points[j].cargo_type;
 			
 			//Eval for object
-			if (vehicle == "ship") {
-				obj.ship[sandstorm][row][col][point] += 1;
-			} else if (vehicle == "rRocket") {
-				obj.rRocket[sandstorm][row][col][point] += 1;
-			} else if (vehicle == "lRocket") {
-				obj.lRocket[sandstorm][row][col][point] += 1;
+			if (point == "both") {
+				console.log("BOTH POINTS");
+				obj[vehicle][sandstorm][row][col][panel] += 1;
+				obj[vehicle][sandstorm][row][col][cargo] += 1;
+			} else if (point == "cargo") {
+				obj[vehicle][sandstorm][row][col][cargo] += 1;
+			} else if (point == "panel") {
+				obj[vehicle][sandstorm][row][col][panel] += 1;
 			}
+			//obj[vehicle][sandstorm][row][col][point] += 1;
 			
 			
 		}
@@ -387,15 +390,17 @@ function buildDataObj(arr) {
 			let row = arr[i].teleop.points[j].row;
 			let col = arr[i].teleop.points[j].col;
 			let vehicle = arr[i].teleop.points[j].vehicle;
-			let point = (arr[i].teleop.points[j].cargo_type == "panel") ? panel : cargo;
+			let point = arr[i].teleop.points[j].cargo_type;
 			
 			//Eval for object
-			if (vehicle == "ship") {
-				obj.ship[teleop][row][col][point] += 1;
-			} else if (vehicle == "rRocket") {
-				obj.rRocket[teleop][row][col][point] += 1;
-			} else if (vehicle == "lRocket") {
-				obj.lRocket[teleop][row][col][point] += 1;
+			if (point == "both") {
+				console.log("BOTH POINTS");
+				obj[vehicle][teleop][row][col][panel] += 1;
+				obj[vehicle][teleop][row][col][cargo] += 1;
+			} else if (point == "cargo") {
+				obj[vehicle][teleop][row][col][cargo] += 1;
+			} else if (point == "panel") {
+				obj[vehicle][teleop][row][col][panel] += 1;
 			}
 		}
 		
