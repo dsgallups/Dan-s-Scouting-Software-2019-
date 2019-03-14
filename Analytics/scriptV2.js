@@ -1,3 +1,4 @@
+"use strict";
 const sandstorm = 0;
 const teleop = 1;
 const panel = 0;
@@ -216,7 +217,7 @@ function buildInfo(arr) {
 	let hasAuto = (usingAutonomous) ? "Yes" : "No";
 	
 	let section = "<div class=\"basic-info\">";
-		section += "<div>Team #" + arr[0].initials.team_id + "</div><br>";
+		section += "<div>Team #" + arr[0].initials.team_id + " - </div><br>";
 		section += "<div><span>Wins/Losses/Ties:</span> "+matchResults["wins"]+":"+matchResults["losses"]+":"+matchResults["ties"]+"</div>";
 		section += "<div><span>Highest climb level:</span> " + getHighestClimbLevel(arr) + "</div>";
 		section += "<div><span>Is this team likely to use autonomous?</span> " + hasAuto + "</div>";

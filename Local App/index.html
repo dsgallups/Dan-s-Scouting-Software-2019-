@@ -193,6 +193,13 @@
 					<br>
 				<span class="question" style="text-decoration: none;">Match No: </span><input type="number" name="match-no" min="0" max="999">
 					<br>
+					<br>
+				<span class="question" style="text-decoration: none;">Is the team present?</span>
+					<br>
+				Yes: <input type="radio" name="team-present" value="true" checked required>
+					<br>
+				No: <input type="radio" name="team-present" value="false">
+					<br>
 				<div class="starting-pos">
 				</div>
 					<br>
@@ -220,7 +227,13 @@
 			Yes: <input type="radio" name="hit-1747" value="true">
 				<br>
 			No: <input type="radio" name="hit-1747" value="false" checked>
-				<br>			
+				<br>
+			<div class="question">Did this team cross the hab line?</div>
+				<br>
+			Yes: <input type="radio" name="cross-line" value="true">
+				<br>
+			No: <input type="radio" name="cross-line" value="false" checked>
+				<br>
 			<div class="question">Fill in the points made by this team during sandstorm:</div>
 			<div class="sandstorm-points"></div>
 		</div>

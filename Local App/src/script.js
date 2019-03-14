@@ -20,6 +20,7 @@ $(document).ready(() => {
 		e.preventDefault();
 		var obj = {
 				initials: {
+					team_present: false,
 					team_id: 0,
 					match_no: 0,
 					pos: ["N","N"],
@@ -27,6 +28,7 @@ $(document).ready(() => {
 					preloaded: [],
 				},
 				sandstorm: {
+					cross_line: false,
 					autonomous: false,
 					hit_1747: false,
 					points: []
@@ -54,6 +56,8 @@ $(document).ready(() => {
 				obj.initials.team_id = f[i].value;
 			} else if (f[i].name == "match-no") {
 				obj.initials.match_no = f[i].value;
+			} else if (f[i].name == "team-present") {
+				obj.initials.team_present = f[i].value;
 			} else if (f[i].name == "starting-pos-radio") {
 				obj.initials.pos[0] = f[i].value.substring(0,1);
 				obj.initials.pos[1] = f[i].value.substring(1,2);
@@ -75,6 +79,8 @@ $(document).ready(() => {
 				obj.sandstorm.autonomous = f[i].value;
 			} else if (f[i].name == "hit-1747") {
 				obj.sandstorm.hit_1747 = f[i].value;
+			} else if (f[i].name == "cross-line") {
+				obj.sandstorm.cross_line = f[i].value;
 			} else if (f[i].name.indexOf("sandstorm-lRocket") !== -1) {
 				//left rocket
 				var point = {
@@ -197,7 +203,6 @@ $(document).ready(() => {
 	});
 	
 	
-	//TODO: there should be no reason why this doesn't work.
 	$(document).on('click','.hide-table', function() {
 		console.log("hide table clicked" + $(this).next().removeClass("show").addClass("hide"));
 		//$(this).next().addClass("hide");
