@@ -455,8 +455,9 @@ function buildHeatMap(obj, teamNo) {
 					for (let j = 0; j < obj.lRocket[teleop].length; j++) {
 						let hatchPanelVal = (obj.lRocket[sandstorm][j][i][panel] + obj.lRocket[teleop][j][i][panel]) * 2;
 						let cargoVal = (obj.lRocket[sandstorm][j][i][cargo] + obj.lRocket[teleop][j][i][cargo]) * 3;
+						let opacity = (+hatchPanelVal + +cargoVal)/lRocketMaxVal || 0;
 						map += "<th type=\"lRocket\" teamNo=\""+teamNo+
-						"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/lRocketMaxVal)+";\"></div></th>";
+						"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+opacity+";\"></div></th>";
 					}
 				map += "</tr>";
 			}
@@ -468,7 +469,8 @@ function buildHeatMap(obj, teamNo) {
 				for (let j = 0; j < obj.ship[teleop][i].length; j++) {
 					let hatchPanelVal = (obj.ship[sandstorm][i][j][panel] + obj.ship[teleop][i][j][panel]) * 2;
 					let cargoVal = (obj.ship[sandstorm][i][j][cargo] + obj.ship[teleop][i][j][cargo]) * 3;
-					map += "<th type=\"ship\" teamNo=\""+teamNo+"\" row=\""+i+"\" col=\""+j+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/shipMaxVal)+";\"></div></th>";
+					let opacity = (+hatchPanelVal + +cargoVal)/shipMaxVal || 0;
+					map += "<th type=\"ship\" teamNo=\""+teamNo+"\" row=\""+i+"\" col=\""+j+"\"><div style=\"opacity:"+opacity+";\"></div></th>";
 				}
 				map += "</tr>";
 			}
@@ -480,7 +482,8 @@ function buildHeatMap(obj, teamNo) {
 				for (let j = obj.rRocket[teleop].length - 1; j >= 0; j--) {
 					let hatchPanelVal = (obj.rRocket[sandstorm][j][i][panel] + obj.rRocket[teleop][j][i][panel]) * 2;
 					let cargoVal = (obj.rRocket[sandstorm][j][i][cargo] + obj.rRocket[teleop][j][i][cargo]) * 3;
-					map += "<th type=\"rRocket\" teamNo=\""+teamNo+"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+((+hatchPanelVal + +cargoVal)/rRocketMaxVal)+";\"></div></th>";
+					let opacity = (+hatchPanelVal + +cargoVal)/rRocketMaxVal || 0;
+					map += "<th type=\"rRocket\" teamNo=\""+teamNo+"\" row=\""+j+"\" col=\""+i+"\"><div style=\"opacity:"+opacity+";\"></div></th>";
 				}
 				map += "</tr>";
 			}
