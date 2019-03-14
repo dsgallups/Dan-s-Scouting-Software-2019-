@@ -1,7 +1,8 @@
 Dan's Scouting Software (2019)
 
 # Programming priorities
-
+0. Add the "event" parameter to our scouting app
+1. Create changeable heatmap based off parameters in the analytics
 1. Add the "crossed line" param to our scouting app
 2. TBA API for viewing matches??
 
