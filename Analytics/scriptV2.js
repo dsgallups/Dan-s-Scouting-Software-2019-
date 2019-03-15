@@ -102,16 +102,27 @@ $(document).ready(function() {
 			let teamObjArr = buildTeamObjArr(currentTeam, arr);
 			
 			let section = "<div class=\"team-info\">";
+			
+				//TODO: see about removing commented out code below
+				//section += "<div class=\"overview\">";
+					//Builds our "overview" div element
+					section += buildOverview(currentTeam);
+				//section += "</div>";
 				//Per our instructions:
 				//arr already exists
-				section += buildInfo(teamObjArr)
 				
-				//<div class="heatMap">
-				let dataObj = buildDataObj(teamObjArr);
-				allTeamsData.push(dataObj);
-				section += buildHeatMap(dataObj, currentTeam);
-				//buildHeatMap(buildDataObj(buildTeamObjArr(currentTeam, arr)), currentTeam)
-				//</div>
+				//buildInfo() builds our "basic-info" div
+				
+				section += "<div class=\"UI\">";
+					section += buildInfo(teamObjArr)
+				
+					//<div class="heatMap">
+					let dataObj = buildDataObj(teamObjArr);
+					allTeamsData.push(dataObj);
+					section += buildHeatMap(dataObj, currentTeam);
+					//buildHeatMap(buildDataObj(buildTeamObjArr(currentTeam, arr)), currentTeam)
+					//</div>
+				section += "</div>";
 			section += "</div>";
 			
 			$('.container').append(section);
@@ -119,6 +130,17 @@ $(document).ready(function() {
 		}
 	});
 	
+	
+	//When changing our overview parameters:
+	$(document).on('change','.display',function() {
+		//for testing purposes
+		//console.log("changing " + $(this).attr("name") + "'s value to " + $(this).val());
+		
+		//fetches the teamNo so we can edit the div
+		let teamNo = $(this).attr("name").split('-')[0];
+		console.log(teamNo);
+		
+	});
 	
 	
 	//Details to heat map
@@ -192,6 +214,39 @@ function buildTeamObjArr(teamNo, arr) {
 	return teamArr;
 }
 
+/*
+	buildOverview(teamNo) requires one input:
+		teamNo - a string containing the number of the team we want to analyze (e.g. "1747", "238", "6925")
+	
+	Returns a string containing a div with the class "overview"
+	
+*/
+function buildOverview(teamNo) {
+	let section = "<div class=\"overview\">";
+	
+		section += "<div class=\"overview-header\">Show Data For:</div>";
+		section += "<div class=\"overview-options\">";
+		
+		//Our options for display. first indice is name, second indice is value.
+		let types = [
+			["All Matches", "all"],
+			["Past Three Matches", "past-three"],
+			["Gainesville", "gainesville"],
+			["Tippecanoe", "tippecanoe"]
+		]
+		
+		for (let i = 0; i < types.length; i++) {
+			section += "<div class=\"display-option\">";
+				section += "<div class=\"display-header\">"+types[i][0]+"</div>";
+				section += "<input type=\"radio\" class=\"display\" name=\""+teamNo+"-display\" value=\""+types[i][1]+"\"";
+				//first element always checked
+				section += (i == 0) ? " checked>" : ">";
+			section += "</div>";
+		}
+		section += "</div>";
+	section += "</div>";
+	return section;
+}
 
 function buildInfo(arr) {
 	//passed array follows object structure
@@ -215,12 +270,14 @@ function buildInfo(arr) {
 	*/
 	let matchResults = getMatchResults(arr);
 	let hasAuto = (usingAutonomous) ? "Yes" : "No";
+	let pieces = getPreloadedGamePieces(arr);
 	
 	let section = "<div class=\"basic-info\">";
 		section += "<div>Team #" + arr[0].initials.team_id + " - </div><br>";
 		section += "<div><span>Wins/Losses/Ties:</span> "+matchResults["wins"]+":"+matchResults["losses"]+":"+matchResults["ties"]+"</div>";
 		section += "<div><span>Highest climb level:</span> " + getHighestClimbLevel(arr) + "</div>";
 		section += "<div><span>Is this team likely to use autonomous?</span> " + hasAuto + "</div>";
+		section += "<div><span>Most common preloaded gamepiece:</span> " + getMostCommonPreloadedGamePiece(pieces) + ", C/P/N - " + pieces.cargo + ":" + pieces.panels + ":" + pieces.neither + "</div>";
 		section += "<div><span>Most points scored in teleop: </span> " + getTeleopHighscore(arr) + "</div>";
 		section += "<div><span>Notes:</span></div>";
 		section += getNotes(arr);
@@ -246,6 +303,29 @@ function getMatchResults(arr) {
 		}
 	}
 	return obj;
+}
+
+function getPreloadedGamePieces(arr) {
+	let pieces = {
+		panels: 0,
+		cargo: 0,
+		neither: 0
+	}
+	for (let i = 0; i < arr.length; i++) {
+		//sorry for the inconsistency in naming things
+		if (arr[i].initials.gamepiece == "hatch") {
+			pieces.panels += 1;
+		} else if (arr[i].initials.gamepiece == "cargo") {
+			pieces.cargo += 1;
+		} else {
+			pieces.neither += 1;
+		}
+	}
+	return pieces;
+}
+
+function getMostCommonPreloadedGamePiece(pieces) {
+	return (pieces.panels > pieces.cargo) ? "Hatch Panel" : (pieces.cargo > pieces.neither) ? "Cargo" : "None";		
 }
 
 function getHighestClimbLevel(arr) {
@@ -282,6 +362,7 @@ function getTeleopHighscore(arr) {
 	}
 	return score;
 }
+
 function getNotes(arr) {
 	let section = "<ul>";
 	for (let i = 0; i < arr.length; i++) {
@@ -373,7 +454,7 @@ function buildDataObj(arr) {
 			
 			//Eval for object
 			if (point == "both") {
-				console.log("BOTH POINTS");
+				//console.log("BOTH POINTS");
 				obj[vehicle][sandstorm][row][col][panel] += 1;
 				obj[vehicle][sandstorm][row][col][cargo] += 1;
 			} else if (point == "cargo") {
@@ -394,7 +475,7 @@ function buildDataObj(arr) {
 			
 			//Eval for object
 			if (point == "both") {
-				console.log("BOTH POINTS");
+				//console.log("BOTH POINTS");
 				obj[vehicle][teleop][row][col][panel] += 1;
 				obj[vehicle][teleop][row][col][cargo] += 1;
 			} else if (point == "cargo") {

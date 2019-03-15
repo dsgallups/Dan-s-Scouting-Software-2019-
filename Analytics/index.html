@@ -80,19 +80,54 @@ th div {
 	z-index:1;
 }
 
+.team-info {
+    display: flex;
+    width: 100%;
+	flex-direction: column;
+	align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid black;
+    padding-bottom: 30px;
+}
+.overview {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	background-color: #eff0f1;
+	margin-bottom: 10px;
+	align-items: center;
+	border-radius: 15px;
+}
+.overview-header {
+	font-weight: 800;
+	font-size: 20px;
+	margin-bottom:15px;
+}
+.overview-options {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: space-evenly;
+	height: 70px;
+	align-items: center;
+	border-radius: 15px;
+}
+.display-option {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.UI {
+	display: flex;
+	width: 100%;
+	justify-content: space-around;
+	
+}
 .basic-info {
 	background-color: #eff0f1;
 	font-family: 'Roboto Mono', monospace;
 	width: 450px;
 	padding-left: 5px;
-}
-.team-info {
-    display: flex;
-    width: 100%;
-    margin-bottom: 30px;
-    justify-content: space-around;
-    border-bottom: 1px solid black;
-    padding-bottom: 30px;
 }
 .basic-info div {
 	padding-top:3px;
@@ -115,88 +150,112 @@ th div {
 
 <div class="container">
 	<div class="team-info">
-		<div class="basic-info">
-			<div>Team #0000 - </div><br>
-			<div><span>Wins/Loses/Ties:</span> 0:0:0</div>
-			<div><span>Highest climb level:</span> 0</div>
-			<div><span>Is this team likely to use autonomous?</span> No (0:0)</div>
-			<div><span>Most points scored in teleop:</span> 0</div>
-			<div><span>Notes:</span> </div>
-			<ul>
-				<li>Note #1</li>
-				<li>Note #2</li>
-			</ul>
-			
-			
-		</div>
-		<div class="heatMap" id="0">
-			<div class="points-grid">
-				<table class="l-rocket">
-					<tbody>
-						<tr class="1747-lrocket-1">
-							<th><div row="0" col="1"></div></th>
-							<th><div row="1" col="1"></div></th>
-							<th><div row="2" col="1"></div></th>
-						</tr>
-						<tr class="1747-lrocket-2">
-							<th><div row="0" col="0"></div></th>
-							<th><div row="1" col="0"></div></th>
-							<th><div row="2" col="0"></div></th>
-						</tr>
-					</tbody>
-				</table>
-				
-				<table class="cargo-ship">
-					<tbody>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-					</tbody>
-				</table>
-				
-				<table class="r-rocket">
-					<tbody>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-					</tbody>
-				</table>
+		<div class="overview">
+			<div class="overview-header">Show Data For:</div>
+			<div class="overview-options">
+				<div class="display-option">
+					<div class="display-header">All Matches</div>
+					<input type="radio" name="display" value="all" checked>
+				</div>
+				<div class="display-option">
+					<div class="display-header">Past Three Matches</div>
+					<input type="radio" name="display" value="past-three">
+				</div>
+				<div class="display-option">
+					<div class="display-header">Gainesville</div>
+					<input type="radio" name="display" value="gainesville">
+				</div>
+				<div class="display-option">
+					<div class="display-header">Tippecanoe</div>
+					<input type="radio" name="display" value="tippecanoe">
+				</div>
 			</div>
-			<div class="initials-grid">
-				<table class="starting-pos">
-					<tbody>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-						<tr>
-							<th><div></div></th>
-							<th><div></div></th>
-							<th><div></div></th>
-						</tr>
-					</tbody>
-				</table>
+		</div>
+		<div class="UI">
+			<div class="basic-info">
+				<div>Team #0000 - </div><br>
+				<div><span>Wins/Loses/Ties:</span> 0:0:0</div>
+				<div><span>Highest climb level:</span> 0</div>
+				<div><span>Is this team likely to use autonomous?</span> No (0:0)</div>
+				<div><span>Most common preloaded gamepiece:</span> " + ", C/P/N: " + " </div>
+				<div><span>Most points scored in teleop:</span> 0</div>
+				<div><span>Notes:</span> </div>
+				<ul>
+					<li>Note #1</li>
+					<li>Note #2</li>
+				</ul>
+				
+				
+			</div>
+			<div class="heatMap" id="0">
+				<div class="points-grid">
+					<table class="l-rocket">
+						<tbody>
+							<tr class="1747-lrocket-1">
+								<th><div row="0" col="1"></div></th>
+								<th><div row="1" col="1"></div></th>
+								<th><div row="2" col="1"></div></th>
+							</tr>
+							<tr class="1747-lrocket-2">
+								<th><div row="0" col="0"></div></th>
+								<th><div row="1" col="0"></div></th>
+								<th><div row="2" col="0"></div></th>
+							</tr>
+						</tbody>
+					</table>
+					
+					<table class="cargo-ship">
+						<tbody>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+						</tbody>
+					</table>
+					
+					<table class="r-rocket">
+						<tbody>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="initials-grid">
+					<table class="starting-pos">
+						<tbody>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+							<tr>
+								<th><div></div></th>
+								<th><div></div></th>
+								<th><div></div></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Playground</title>
+</head>
+<style>
+/* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+/*
+.checkmark:before {
+    content: "";
+    position: absolute;
+    display: none;
+    top: 5px;
+    left: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ffa500;
+}
+*/
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  /*background-color: #ccc;*/
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #f4d941;
+  /*background-color: #ffa500;*/
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	/*background: #ccc;*/
+	
+}
+ 
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+  background: #ffa500;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+    top: 5px;
+    left: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ccc;
+}
+</style>
+<body>
+	<label class="container">One
+	  <input type="radio" name="val" checked="checked">
+	  <span class="checkmark"></span>
+	</label>
+
+	<label class="container">Two
+	  <input type="radio" name="val">
+	  <span class="checkmark"></span>
+	</label>
+
+	<label class="container">Three
+	  <input type="radio" name="val">
+	  <span class="checkmark"></span>
+	</label>
+
+	<label class="container">Four
+	  <input type="radio" name="val">
+	  <span class="checkmark"></span>
+	</label>
+</body>
+</html>

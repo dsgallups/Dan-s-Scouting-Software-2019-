@@ -39,7 +39,8 @@ $(document).ready(() => {
 				endgame: {
 					climb_level: -1,
 					buddy_climb: [0,false],
-					win: false
+					disabled: false,
+					win: "tie"
 				},
 				notes: ""
 		}		
@@ -143,7 +144,9 @@ $(document).ready(() => {
 				obj.endgame.buddy_climb[0] = f[i].value;
 			} else if (f[i].name == "self-lift") {
 				obj.endgame.buddy_climb[1] = f[i].value;
-			} else if (f[i].name == "win") {
+			} else if (f[i].name == "disabled") {
+				obj.endgame.disabled = f[i].value;
+			} else if (f[i].name == "match-result") {
 				obj.endgame.win = f[i].value;
 				
 			//Notes
