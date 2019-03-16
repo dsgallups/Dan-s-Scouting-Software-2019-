@@ -106,14 +106,16 @@ $(document).ready(function() {
 				//TODO: see about removing commented out code below
 				//section += "<div class=\"overview\">";
 					//Builds our "overview" div element
+				section += "<div class=\"overview\">";
 					section += buildOverview(currentTeam);
+				section += "</div>";
 				//section += "</div>";
 				//Per our instructions:
 				//arr already exists
 				
 				//buildInfo() builds our "basic-info" div
 				
-				section += "<div class=\"UI\">";
+				section += "<div class=\""+currentTeam+"-UI UI\">";
 					section += buildInfo(teamObjArr)
 				
 					//<div class="heatMap">
@@ -138,7 +140,22 @@ $(document).ready(function() {
 		
 		//fetches the teamNo so we can edit the div
 		let teamNo = $(this).attr("name").split('-')[0];
+		let val = $(this).val();
 		console.log(teamNo);
+		
+		//Now we need to change our heatmap and info based on what they choose
+		if (val == "all") {
+			//We're targeting <teamNo>-UI
+			
+			//teamObjArr stores our team's info
+			let teamObjArr = buildTeamObjArr(teamNo, arr);
+			let section = buildInfo(teamObjArr);
+			
+			$("."+teamNo+"-UI").html(section);
+		} else if (val == "past-three") {
+		} else if (val == "gainesville") {
+		} else if (val == "tippecanoe") {
+		}
 		
 	});
 	
@@ -222,9 +239,7 @@ function buildTeamObjArr(teamNo, arr) {
 	
 */
 function buildOverview(teamNo) {
-	let section = "<div class=\"overview\">";
-	
-		section += "<div class=\"overview-header\">Show Data For:</div>";
+	let section = "<div class=\"overview-header\">Show Data For:</div>";
 		section += "<div class=\"overview-options\">";
 		
 		//Our options for display. first indice is name, second indice is value.
@@ -244,7 +259,6 @@ function buildOverview(teamNo) {
 			section += "</div>";
 		}
 		section += "</div>";
-	section += "</div>";
 	return section;
 }
 
