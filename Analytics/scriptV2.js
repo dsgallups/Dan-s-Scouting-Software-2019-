@@ -79,6 +79,9 @@ const cargo = 1;
 
 
 $(document).ready(function() {
+	
+	console.log(readTextFile("data/1.txt"));
+	
 	//This'll hold our teams
 	let teams = [];
 	//This'll hold data for later (heatmap details)
@@ -202,6 +205,24 @@ $(document).ready(function() {
 	});
 	
 });
+
+function readTextFile(file)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    }
+    rawFile.send(null);
+}
 
 /*
 	buildTeamArr(teamNo, arr) requires two inputs:
