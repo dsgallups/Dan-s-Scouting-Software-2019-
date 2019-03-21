@@ -80,7 +80,7 @@ const cargo = 1;
 
 $(document).ready(function() {
 	
-	console.log(readTextFile("data/1.txt"));
+	//console.log(readTextFile("data/1.txt"));
 	
 	//This'll hold our teams
 	let teams = [];
@@ -206,23 +206,17 @@ $(document).ready(function() {
 	
 });
 
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
-}
+var openFile = function(event) {
+	console.dir(event);
+	var input = event.target;
+
+	var reader = new FileReader();
+	reader.onload = function(){
+		var arrayBuffer = reader.result;
+		//console.dir(arrayBuffer);
+	};
+	reader.readAsArrayBuffer(input.files[0]);
+};
 
 /*
 	buildTeamArr(teamNo, arr) requires two inputs:
