@@ -1,7 +1,7 @@
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-<script src="data/data.js"></script>
+<!--<script src="data/data.js"></script>-->
 <script src="jquery.js"></script>
 <script src="scriptV2.js"></script>
 <title>Data Analytics</title>
@@ -139,7 +139,9 @@ th div {
 </style>
 </head>
 <body>
-<input type="file" name="file[]" onchange="openFile(event)" multiple />
+ <input type="file" id="filesx" name="filesx[]"
+      onchange="buildData(this.files)" multiple=""/>
+    <div id="bag"><ul/></div>
 <span class="header">DATAAAAA</span>
 <div style="margin-top:15px;margin-bottom:15px;">
 	Input teams (separate by commas w/ no spaces):

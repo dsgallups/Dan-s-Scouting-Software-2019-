@@ -1,4 +1,5 @@
 "use strict";
+let arr;
 const sandstorm = 0;
 const teleop = 1;
 const panel = 0;
@@ -80,7 +81,7 @@ const cargo = 1;
 
 $(document).ready(function() {
 	
-	//console.log(readTextFile("data/1.txt"));
+	
 	
 	//This'll hold our teams
 	let teams = [];
@@ -89,6 +90,7 @@ $(document).ready(function() {
 	
 	//This is our event listener which triggers our script
 	$('.teams').on('input',function() {
+		console.dir(arr);
 		//From a java perspective, this is our "main" function that executes after every input
 		//Store our teams
 		teams = $('.teams').val().split(',');
@@ -206,17 +208,28 @@ $(document).ready(function() {
 	
 });
 
-var openFile = function(event) {
-	console.dir(event);
-	var input = event.target;
+function buildData(files) {
+	let arrText = "[";
+	let canParse = false;
+	for (let i = 0; i < files.length; i++) {	
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			console.log("i = " + i);
+			//console.log(e.target.result);
+			arrText += e.target.result;
+			if (i == files.length-1) {
+				arrText += "]";
+				//console.log(arrText);
+				arr = JSON.parse(arrText);
+				canParse = true;
+			} else {
+				arrText += ",";
+			}
+		}
+		reader.readAsText(files[i]);
+	}
+}
 
-	var reader = new FileReader();
-	reader.onload = function(){
-		var arrayBuffer = reader.result;
-		//console.dir(arrayBuffer);
-	};
-	reader.readAsArrayBuffer(input.files[0]);
-};
 
 /*
 	buildTeamArr(teamNo, arr) requires two inputs:
