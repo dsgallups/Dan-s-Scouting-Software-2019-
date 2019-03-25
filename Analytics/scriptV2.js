@@ -398,6 +398,8 @@ function getTeleopHighscore(arr) {
 				runningScore += 2;
 			} else if (arr[i].teleop.points[j].cargo_type == "panel") {
 				runningScore += 3;
+			} else if (arr[i].teleop.points[j].cargo_type == "both") {
+				runningScore += 5;
 			}
 		}
 		score = (runningScore > score) ? runningScore : score;
